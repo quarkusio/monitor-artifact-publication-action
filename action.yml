@@ -37,6 +37,9 @@ inputs:
   post-delay:
     description: 'Delay in minutes to wait after this particular artifact is published'
     required: true
+outputs:
+  published:
+    value: ${{ steps.action.outputs.published }}
 runs:
   using: "composite"
   steps:
