@@ -7,6 +7,36 @@ inputs:
   action:
     description: 'Name of the action (if named)'
     required: false
+  group-id:
+    description: 'Group id of the artifact'
+    required: true
+  artifact-id:
+    description: 'Artifact id of the artifact'
+    required: true
+  version:
+    description: 'Version of the artifact'
+    required: true
+  issue-number:
+    description: 'Issue number to post to'
+    required: true
+  message-if-published:
+    description: 'Message to post if artifact is published'
+    required: true
+  message-if-not-published:
+    description: 'Message to post if artifact is not published'
+    required: true
+  initial-delay:
+    description: 'Initial delay in minutes before testing for the first time'
+    required: true
+  poll-delay:
+    description: 'Poll delay in minutes'
+    required: true
+  poll-iterations:
+    description: 'Number of polling iterations'
+    required: true
+  post-delay:
+    description: 'Delay in minutes to wait after this particular artifact is published'
+    required: true
 runs:
   using: "composite"
   steps:
