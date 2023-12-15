@@ -49,5 +49,9 @@ public interface MavenCentralRestClient {
         public String toString() {
             return groupId.replace('.', '/') + "/" + artifactId + "/" + version;
         }
+
+        public String toCoordinates() {
+            return groupId + ":" + artifactId + ":" + version;
+        }
     }
 }
