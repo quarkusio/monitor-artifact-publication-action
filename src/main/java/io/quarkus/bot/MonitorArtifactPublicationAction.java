@@ -20,10 +20,12 @@ public class MonitorArtifactPublicationAction {
 
     @Action
     void monitor(Context context, Commands commands, Inputs inputs, GitHub gitHub) {
-        wait(commands, inputs.getInteger(InputKeys.INITIAL_DELAY).getAsInt());
-
         GAV gav = GAV.of(inputs.getRequired(InputKeys.GROUP_ID), inputs.getRequired(InputKeys.ARTIFACT_ID),
                 inputs.getRequired(InputKeys.VERSION));
+
+        commands.notice("Monitoring publication for artifact " + gav.toCoordinates());
+
+        wait(commands, inputs.getInteger(InputKeys.INITIAL_DELAY).getAsInt());
 
         if (isGAVPublished(gav)) {
             handlePublished(context, commands, inputs, gitHub, gav);
@@ -44,7 +46,7 @@ public class MonitorArtifactPublicationAction {
     }
 
     private void handlePublished(Context context, Commands commands, Inputs inputs, GitHub gitHub, GAV gav) {
-        commands.notice("Artifact " + gav + " published, waiting for an additional "
+        commands.notice("Artifact " + gav.toCoordinates() + " published, waiting for an additional "
                 + inputs.getInteger(InputKeys.POST_DELAY).getAsInt() + " mn to let all artifacts to be published");
 
         commands.setOutput(OutputKeys.PUBLISHED, "true");
