@@ -66,7 +66,7 @@ public class MonitorArtifactPublicationAction {
         int issueNumber = inputs.getInteger(InputKeys.ISSUE_NUMBER).getAsInt();
 
         try {
-            GHIssue issue = gitHub.getRepository(context.getGitHubRepositoryOwner() + "/" + context.getGitHubRepository())
+            GHIssue issue = gitHub.getRepository(context.getGitHubRepository())
                     .getIssue(issueNumber);
             issue.comment(published ? inputs.getRequired(InputKeys.MESSAGE_IF_PUBLISHED)
                     : inputs.getRequired(InputKeys.MESSAGE_IF_NOT_PUBLISHED));
