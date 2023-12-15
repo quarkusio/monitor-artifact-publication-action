@@ -71,7 +71,7 @@ public class MonitorArtifactPublicationAction {
             issue.comment(published ? inputs.getRequired(InputKeys.MESSAGE_IF_PUBLISHED)
                     : inputs.getRequired(InputKeys.MESSAGE_IF_NOT_PUBLISHED));
         } catch (Exception e) {
-            commands.error("Unable to post message in issue " + issueNumber);
+            commands.error("Unable to post message in issue " + issueNumber + ": " + e.getMessage());
             return;
         }
     }
