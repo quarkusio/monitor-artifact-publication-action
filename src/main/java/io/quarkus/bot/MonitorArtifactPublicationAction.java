@@ -20,10 +20,12 @@ public class MonitorArtifactPublicationAction {
 
     @Action
     void monitor(Context context, Commands commands, Inputs inputs, GitHub gitHub) {
-        wait(commands, inputs.getInteger(InputKeys.INITIAL_DELAY).getAsInt());
-
         GAV gav = GAV.of(inputs.getRequired(InputKeys.GROUP_ID), inputs.getRequired(InputKeys.ARTIFACT_ID),
                 inputs.getRequired(InputKeys.VERSION));
+
+        commands.notice("Monitoring publication for artifact " + gav);
+
+        wait(commands, inputs.getInteger(InputKeys.INITIAL_DELAY).getAsInt());
 
         if (isGAVPublished(gav)) {
             handlePublished(context, commands, inputs, gitHub, gav);
