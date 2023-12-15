@@ -3,7 +3,6 @@ package io.quarkus.bot;
 import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.logging.Logger;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GitHub;
 
@@ -15,15 +14,13 @@ import io.quarkus.bot.MavenCentralRestClient.GAV;
 
 public class MonitorArtifactPublicationAction {
 
-    private static Logger LOG = Logger.getLogger(MonitorArtifactPublicationAction.class);
-
     @Inject
     @RestClient
     MavenCentralRestClient mavenCentralRestClient;
 
     @Action
     void monitor(Context context, Commands commands, Inputs inputs, GitHub gitHub) {
-        wait(inputs.getInteger(InputKeys.INITIAL_DELAY).getAsInt());
+        wait(commands, inputs.getInteger(InputKeys.INITIAL_DELAY).getAsInt());
 
         GAV gav = GAV.of(inputs.getRequired(InputKeys.GROUP_ID), inputs.getRequired(InputKeys.ARTIFACT_ID),
                 inputs.getRequired(InputKeys.VERSION));
@@ -34,7 +31,7 @@ public class MonitorArtifactPublicationAction {
         }
 
         for (int i = 0; i < inputs.getInteger(InputKeys.POLL_ITERATIONS).getAsInt(); i++) {
-            wait(inputs.getInteger(InputKeys.POLL_DELAY).getAsInt());
+            wait(commands, inputs.getInteger(InputKeys.POLL_DELAY).getAsInt());
 
             if (isGAVPublished(gav)) {
                 handlePublished(context, commands, inputs, gitHub, gav);
@@ -43,16 +40,16 @@ public class MonitorArtifactPublicationAction {
         }
 
         commands.setOutput(OutputKeys.PUBLISHED, "false");
-        postMessage(context, gitHub, inputs, false);
+        postMessage(context, commands, gitHub, inputs, false);
     }
 
     private void handlePublished(Context context, Commands commands, Inputs inputs, GitHub gitHub, GAV gav) {
-        LOG.info("Artifact " + gav + " published, waiting for an additional "
+        commands.notice("Artifact " + gav + " published, waiting for an additional "
                 + inputs.getInteger(InputKeys.POST_DELAY).getAsInt() + " mn to let all artifacts to be published");
 
         commands.setOutput(OutputKeys.PUBLISHED, "true");
-        wait(inputs.getInteger(InputKeys.POST_DELAY).getAsInt());
-        postMessage(context, gitHub, inputs, true);
+        wait(commands, inputs.getInteger(InputKeys.POST_DELAY).getAsInt());
+        postMessage(context, commands, gitHub, inputs, true);
     }
 
     private boolean isGAVPublished(GAV gav) {
@@ -63,7 +60,7 @@ public class MonitorArtifactPublicationAction {
         }
     }
 
-    private static void postMessage(Context context, GitHub gitHub, Inputs inputs, boolean published) {
+    private static void postMessage(Context context, Commands commands, GitHub gitHub, Inputs inputs, boolean published) {
         int issueNumber = inputs.getInteger(InputKeys.ISSUE_NUMBER).getAsInt();
 
         try {
@@ -72,22 +69,22 @@ public class MonitorArtifactPublicationAction {
             issue.comment(published ? inputs.getRequired(InputKeys.MESSAGE_IF_PUBLISHED)
                     : inputs.getRequired(InputKeys.MESSAGE_IF_NOT_PUBLISHED));
         } catch (Exception e) {
-            LOG.error("Unable to post message in issue " + issueNumber);
+            commands.error("Unable to post message in issue " + issueNumber);
             return;
         }
     }
 
-    private static void wait(int delayInMinutes) {
-        LOG.info("Start waiting for " + delayInMinutes + " mn");
+    private static void wait(Commands commands, int delayInMinutes) {
+        commands.notice("Start waiting for " + delayInMinutes + " mn");
         for (int i = 0; i < delayInMinutes; i++) {
             try {
                 Thread.sleep(60_000);
             } catch (Exception e) {
-                LOG.warn("Wait interrupted", e);
+                commands.warning("Wait interrupted: " + e.getMessage());
                 return;
             }
 
-            LOG.info("... waited for " + (i + 1) + " mn");
+            commands.notice("... waited for " + (i + 1) + " mn");
         }
     }
 }
