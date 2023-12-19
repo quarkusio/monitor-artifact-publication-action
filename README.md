@@ -8,6 +8,8 @@ Once the artifact is released, it posts a comment to the issue provided as an in
 
 It is developed in Quarkus using the [Quarkus GitHub Action](https://github.com/quarkiverse/quarkus-github-action/) extension.
 
+:warning: This action is automatically published when the `main` branch is pushed.
+
 ## The default action
 
 ### Example
