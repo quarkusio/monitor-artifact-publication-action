@@ -3,6 +3,8 @@
 
 > Monitor artifact publication to Maven Central
 
+<p align="center"><img src="https://design.jboss.org/quarkus/bot/final/images/quarkusbot_full.svg" width="128" height="128" /></p>
+
 This action is used to monitor the publication of a version of an artifact to Maven Central.
 Once the artifact is released, it posts a comment to the issue provided as an input.
 
