@@ -47,7 +47,7 @@ public class MonitorArtifactPublicationAction {
 
     private void handlePublished(Context context, Commands commands, Inputs inputs, GitHub gitHub, GAV gav) {
         commands.notice("Artifact " + gav.toCoordinates() + " published, waiting for an additional "
-                + inputs.getInteger(InputKeys.POST_DELAY).getAsInt() + " mn to let all artifacts to be published");
+                + inputs.getInteger(InputKeys.POST_DELAY).getAsInt() + " mn to give some time to the other artifacts");
 
         commands.setOutput(OutputKeys.PUBLISHED, "true");
         wait(commands, inputs.getInteger(InputKeys.POST_DELAY).getAsInt());
