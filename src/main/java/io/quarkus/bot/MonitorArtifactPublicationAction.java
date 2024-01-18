@@ -1,5 +1,8 @@
 package io.quarkus.bot;
 
+import java.util.Optional;
+import java.util.OptionalInt;
+
 import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -63,13 +66,25 @@ public class MonitorArtifactPublicationAction {
     }
 
     private static void postMessage(Context context, Commands commands, GitHub gitHub, Inputs inputs, boolean published) {
-        int issueNumber = inputs.getInteger(InputKeys.ISSUE_NUMBER).getAsInt();
+        OptionalInt issueNumber = inputs.getInteger(InputKeys.ISSUE_NUMBER);
+        if (issueNumber.isEmpty()) {
+            return;
+        }
 
         try {
             GHIssue issue = gitHub.getRepository(context.getGitHubRepository())
-                    .getIssue(issueNumber);
-            issue.comment(published ? inputs.getRequired(InputKeys.MESSAGE_IF_PUBLISHED)
-                    : inputs.getRequired(InputKeys.MESSAGE_IF_NOT_PUBLISHED));
+                    .getIssue(issueNumber.getAsInt());
+            if (published) {
+                Optional<String> messageIfPublished = inputs.get(InputKeys.MESSAGE_IF_PUBLISHED);
+                if (messageIfPublished.isPresent()) {
+                    issue.comment(messageIfPublished.get());
+                }
+            } else {
+                Optional<String> messageIfNotPublished = inputs.get(InputKeys.MESSAGE_IF_NOT_PUBLISHED);
+                if (messageIfNotPublished.isPresent()) {
+                    issue.comment(messageIfNotPublished.get());
+                }
+            }
         } catch (Exception e) {
             commands.error("Unable to post message in issue " + issueNumber + ": " + e.getMessage());
             return;
