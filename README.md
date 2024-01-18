@@ -20,7 +20,7 @@ It is developed in Quarkus using the [Quarkus GitHub Action](https://github.com/
 - name: Monitor artifact publication
   uses: quarkusio/monitor-artifact-publication-action@main
   with:
-    github-token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+    github-token: ${{ secrets.GITHUB_TOKEN }}
     group-id: ${{ github.event.inputs.group-id }}
     artifact-id: ${{ github.event.inputs.artifact-id }}
     version: ${{ github.event.inputs.version }}
