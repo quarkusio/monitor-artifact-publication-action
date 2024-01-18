@@ -6,7 +6,7 @@
 <p align="center"><img src="https://design.jboss.org/quarkus/bot/final/images/quarkusbot_full.svg" width="128" height="128" /></p>
 
 This action is used to monitor the publication of a version of an artifact to Maven Central.
-Once the artifact is released, it posts a comment to the issue provided as an input.
+Once the artifact is released, it (optionally) posts a comment to the issue provided as an input.
 
 It is developed in Quarkus using the [Quarkus GitHub Action](https://github.com/quarkiverse/quarkus-github-action/) extension.
 
