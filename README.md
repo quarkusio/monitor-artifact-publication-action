@@ -21,16 +21,17 @@ It is developed in Quarkus using the [Quarkus GitHub Action](https://github.com/
   uses: quarkusio/monitor-artifact-publication-action@main
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
-    group-id: ${{ github.event.inputs.group-id }}
-    artifact-id: ${{ github.event.inputs.artifact-id }}
-    version: ${{ github.event.inputs.version }}
-    issue-number: ${{ github.event.inputs.issue-number }}
-    message-if-published: ${{ github.event.inputs.message-if-published }}
-    message-if-not-published: ${{ github.event.inputs.message-if-not-published }}
-    initial-delay: ${{ github.event.inputs.initial-delay }}
-    poll-delay: ${{ github.event.inputs.poll-delay }}
-    poll-iterations: ${{ github.event.inputs.poll-iterations }}
-    post-delay: ${{ github.event.inputs.post-delay }}
+    group-id: io.quarkus
+    artifact-id: quarkus-core
+    version: 3.6.4
+    initial-delay: 15
+    poll-delay: 5
+    poll-iterations: 4
+    post-delay: 5
+    # Optional (used in Quarkus release process to notify on the release issue)
+    issue-number: 114
+    message-if-published: Artifact has been published
+    message-if-not-published: Artifact had not been published at the end of the delay
 ```
 
 ### Inputs
