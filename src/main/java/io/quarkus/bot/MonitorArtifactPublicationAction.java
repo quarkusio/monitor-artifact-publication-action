@@ -28,15 +28,15 @@ public class MonitorArtifactPublicationAction {
 
         commands.notice("Monitoring publication for artifact " + gav.toCoordinates());
 
-        wait(commands, inputs.getInteger(InputKeys.INITIAL_DELAY).getAsInt());
+        wait(commands, inputs.getRequiredInt(InputKeys.INITIAL_DELAY));
 
         if (isGAVPublished(gav)) {
             handlePublished(context, commands, inputs, gitHub, gav);
             return;
         }
 
-        for (int i = 0; i < inputs.getInteger(InputKeys.POLL_ITERATIONS).getAsInt(); i++) {
-            wait(commands, inputs.getInteger(InputKeys.POLL_DELAY).getAsInt());
+        for (int i = 0; i < inputs.getRequiredInt(InputKeys.POLL_ITERATIONS); i++) {
+            wait(commands, inputs.getRequiredInt(InputKeys.POLL_DELAY));
 
             if (isGAVPublished(gav)) {
                 handlePublished(context, commands, inputs, gitHub, gav);
@@ -51,10 +51,10 @@ public class MonitorArtifactPublicationAction {
 
     private void handlePublished(Context context, Commands commands, Inputs inputs, GitHub gitHub, GAV gav) {
         commands.notice("Artifact " + gav.toCoordinates() + " published, waiting for an additional "
-                + inputs.getInteger(InputKeys.POST_DELAY).getAsInt() + " mn to give some time to the other artifacts");
+                + inputs.getRequiredInt(InputKeys.POST_DELAY) + " mn to give some time to the other artifacts");
 
         commands.setOutput(OutputKeys.PUBLISHED, "true");
-        wait(commands, inputs.getInteger(InputKeys.POST_DELAY).getAsInt());
+        wait(commands, inputs.getRequiredInt(InputKeys.POST_DELAY));
         postMessage(context, commands, gitHub, inputs, true);
     }
 
@@ -67,7 +67,7 @@ public class MonitorArtifactPublicationAction {
     }
 
     private static void postMessage(Context context, Commands commands, GitHub gitHub, Inputs inputs, boolean published) {
-        OptionalInt issueNumber = inputs.getInteger(InputKeys.ISSUE_NUMBER);
+        OptionalInt issueNumber = inputs.getInt(InputKeys.ISSUE_NUMBER);
         if (issueNumber.isEmpty()) {
             return;
         }
