@@ -44,6 +44,7 @@ public class MonitorArtifactPublicationAction {
             }
         }
 
+        commands.warning("Artifact " + gav.toCoordinates() + " has not been published to Maven Central in due time");
         commands.setOutput(OutputKeys.PUBLISHED, "false");
         postMessage(context, commands, gitHub, inputs, false);
     }
