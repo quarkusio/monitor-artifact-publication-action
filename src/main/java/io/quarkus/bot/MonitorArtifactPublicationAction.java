@@ -28,7 +28,10 @@ public class MonitorArtifactPublicationAction {
 
         commands.notice("Monitoring publication for artifact " + gav.toCoordinates());
 
-        wait(commands, inputs.getRequiredInt(InputKeys.INITIAL_DELAY));
+        int initialDelay = inputs.getRequiredInt(InputKeys.INITIAL_DELAY);
+        if (initialDelay > 0) {
+            wait(commands, initialDelay);
+        }
 
         if (isGAVPublished(gav)) {
             handlePublished(context, commands, inputs, gitHub, gav);
@@ -54,7 +57,10 @@ public class MonitorArtifactPublicationAction {
                 + inputs.getRequiredInt(InputKeys.POST_DELAY) + " mn to give some time to the other artifacts");
 
         commands.setOutput(OutputKeys.PUBLISHED, "true");
-        wait(commands, inputs.getRequiredInt(InputKeys.POST_DELAY));
+        int postDelay = inputs.getRequiredInt(InputKeys.POST_DELAY);
+        if (postDelay > 0) {
+            wait(commands, postDelay);
+        }
         postMessage(context, commands, gitHub, inputs, true);
     }
 

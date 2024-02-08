@@ -41,10 +41,10 @@ It is developed in Quarkus using the [Quarkus GitHub Action](https://github.com/
 | `group-id` | Group id of the artifact |
 | `artifact-id` | Artifact id of the artifact |
 | `version` | Version of the artifact |
-| `initial-delay` | Initial delay in minutes before testing for the first time |
+| `initial-delay` | Initial delay in minutes before testing for the first time (use 0 to disable) |
 | `poll-delay` | Poll delay in minutes |
 | `poll-iterations` | Number of polling iterations |
-| `post-delay` | Delay in minutes to wait after this particular artifact is published |
+| `post-delay` | Delay in minutes to wait after this particular artifact is published (use 0 to disable) |
 | `issue-number` (optional) | Issue number to post to |
 | `message-if-published` (optional) | Message to post if artifact is published |
 | `message-if-not-published` (optional) | Message to post if artifact is not published |
