@@ -11,12 +11,12 @@
     <description>Monitor artifact publication to Maven Central</description>
     <properties>
         <compiler-plugin.version>3.12.1</compiler-plugin.version>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.6.8</quarkus.platform.version>
+        <quarkus.platform.version>3.8.1</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
     </properties>
@@ -35,7 +35,7 @@
         <dependency>
             <groupId>io.quarkiverse.githubaction</groupId>
             <artifactId>quarkus-github-action</artifactId>
-            <version>2.1.1</version>
+            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
